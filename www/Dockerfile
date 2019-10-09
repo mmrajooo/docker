@@ -25,9 +25,9 @@ RUN set -x \
     apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$PGL_GPGKEY" && found=yes && break; \
   done; \
   test -z "$found" && echo >&2 "error: failed to fetch GPG key $PGL_GPGKEY" && exit 1; \
-  && echo "deb http://moblock-deb.sourceforge.net/debian stretch main"      > /etc/apt/sources.list.d/pgl.list  \
+     echo "deb http://moblock-deb.sourceforge.net/debian stretch main"      > /etc/apt/sources.list.d/pgl.list  \
   && echo "deb-src http://moblock-deb.sourceforge.net/debian stretch main" >> /etc/apt/sources.list.d/pgl.list  \
-  && apt-get update && apt-get install -y pgld pglcmd 
+  && apt-get update && apt-get install -y pgld pglcmd
   
 # Forward request logs to Docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
