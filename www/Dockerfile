@@ -6,10 +6,12 @@ LABEL maintainer="MMRAJOO"
 # Install NGINX Plus
 RUN set -x \
   && apt-get update && apt-get upgrade -y \
-  && apt-get install -y apt-transport-https ca-certificates nginx-extras dialog tzdata transmission-daemon gpg vim rsync \
-  && apt-get install -y procps onionbalance dyndns libnet-dns-cloudflare-ddns-perl \
+  && apt-get install -y apt-utils \
+  && apt-get install -y apt-transport-https ca-certificates dialog tzdata procps \
   && echo "America/New_York" > /etc/timezone \
   && dpkg-reconfigure -f noninteractive tzdata \
+  && apt-get install -y nginx-extras transmission-daemon gpg vim rsync \
+  && apt-get install -y onionbalance dyndns libnet-dns-cloudflare-ddns-perl \
   && gpg --keyserver keyserver.ubuntu.com --recv-keys EAF9B4E3C0145138 \
   PGL_GPGKEY=EAF9B4E3C0145138; \
   found=''; \
