@@ -1,23 +1,26 @@
-# From Debian Latest
-FROM debian:latest
+# From Debian 
+FROM debian:buster
 
 LABEL maintainer="MMRAJOO"
 
 # Install SSH HOST SYSTEM
 RUN set -x \
-  && apt-get update && apt-get install apt-utils && apt-get upgrade -y \
-  && apt-get install -y apt-transport-https ca-certificates nginx-extras dialog tzdata transmission-daemon gpg vim rsync \
-  && apt-get install -y procps onionbalance dyndns libnet-dns-cloudflare-ddns-perl \
+  && apt-get update \
+  && apt-get install apt-utils tzdata  \
+  && apt-get install -y openssh-server procps \
   && echo "America/New_York" > /etc/timezone \
-  && dpkg-reconfigure -f noninteractive tzdata
-  
-# Forward request logs to Docker log collector
-#RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-#  && ln -sf /dev/stderr /var/log/nginx/error.log
+  && dpkg-reconfigure -f noninteractive tzdata \
+  && apt-get upgrade -y 
 
-#EXPOSE 80
-#EXPOSE 443
+RUN mkdir /var/run/sshd
+RUN echo 'root:THEPASSWORDYOUCREATED' | chpasswd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-STOPSIGNAL SIGTERM
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-CMD ["nginx", "-g", "daemon off;"]
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
