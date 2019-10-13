@@ -23,7 +23,7 @@ VOLUME /home
 RUN mkdir /root/.ssh
 RUN echo "usenix:usenix:11001:11001::/home/usenix:/bin/bash" | newusers 
 
-RUN apt-get install vim rsync git elinks wget curl dnsutils dialog traceroute whois 
+RUN apt-get install -y vim rsync git elinks wget curl dnsutils dialog traceroute whois 
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
