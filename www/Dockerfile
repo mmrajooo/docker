@@ -14,7 +14,7 @@ RUN set -x \
 RUN apt-get install -y nginx-extras transmission-daemon gpg dyndns onionbalance libnet-dns-cloudflare-ddns-perl
 RUN apt-get install -y vim rsync git elinks wget curl dnsutils dialog traceroute whois 
 
-VOLUME /etc/nginx
+VOLUME /etc
 VOLUME /usr/share/nginx
 
 RUN apt-get clean && \
